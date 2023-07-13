@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contatore</title>
+  <script>
+    var counter = 0;
+    var interval;
+
+    function startCounter() {
+      interval = setInterval(incrementCounter, 6000);
+    }
+
+    function incrementCounter() {
+      counter++;
+      document.getElementById("counter").textContent = counter;
+    }
+
+    function resetCounter() {
+      counter = 0;
+      document.getElementById("counter").textContent = counter;
+    }
+  </script>
+</head>
+<body onload="startCounter()">
+  <h1>Contatore</h1>
+  <p>Valore attuale: <span id="counter">0</span></p>
+  <button onclick="resetCounter()">Reset</button>
+</body>
+</html>
