@@ -6,6 +6,19 @@
     var counter = 0;
     var interval;
 
+    function loadCounterValue() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var data = JSON.parse(xhr.responseText);
+          counter = data.counter;
+          document.getElementById("counter").textContent = counter;
+        }
+      };
+      xhr.open("GET", "counter.json", true);
+      xhr.send();
+    }
+
     function startCounter() {
       interval = setInterval(incrementCounter, 6000);
     }
@@ -13,15 +26,27 @@
     function incrementCounter() {
       counter++;
       document.getElementById("counter").textContent = counter;
+      saveCounterValue();
     }
 
     function resetCounter() {
       counter = 0;
       document.getElementById("counter").textContent = counter;
+      saveCounterValue();
+    }
+
+    function saveCounterValue() {
+      var data = { counter: counter };
+      var jsonData = JSON.stringify(data);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "save_counter.php", true);
+      xhr.setRequestHeader("Content-type", "application/json");
+      xhr.send(jsonData);
     }
   </script>
 </head>
-<body onload="startCounter()">
+<body onload="loadCounterValue(); startCounter();">
   <h1>Contatore</h1>
   <p>Valore attuale: <span id="counter">0</span></p>
   <button onclick="resetCounter()">Reset</button>
